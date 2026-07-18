@@ -1,0 +1,19 @@
+@{
+    // يندمج داخل قالب الموقع الكبير العام (الهيدر والفوتر الأساسي)
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main-wrapper">
+    <aside class="custom-sidebar">
+        <partial name="_IdentitySaidbar" />
+    </aside>
+
+    <main class="main-content">
+
+        @RenderBody()
+
+    </main>
+</div>
+
+@* التمرير السحري والمباشر للـ Scripts لمنع خطأ الأمس القاتل *@
+@RenderSection("Scripts", required: false)

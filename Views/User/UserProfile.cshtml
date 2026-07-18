@@ -1,0 +1,138 @@
+@model userMangment.ViewModels.UserProfileViewModel
+
+@{
+    ViewData["Title"] = "User Profile";
+    Layout = "~/Views/Shared/_CustomSecurityLayout.cshtml";
+
+}
+
+<div class="container-fluid mt-4">
+    <h2 class="mb-4 text-center text-md-start">User Profile</h2>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+   
+  
+    @if (Model != null)
+    {
+
+       
+        <div class="row justify-content-md-center">
+            <div class="col-8 col-md-4">
+                <div class="card shadow-sm p-4 text-center h-100">
+                    <div class="profile-image-wrapper">
+                        @* <img src="/images/user.png" class="rounded-circle mb-3" width="100" alt="User Image"> *@
+                    </div>
+                    <h4>@Model.FullName</h4>
+
+                    <p class="text-muted text break">@Model.Email</p>
+                    <p class="text-mutex">phone</p>
+
+                    <div class="mb-4">
+                        <span class="badge @(Model.IsMember ? "bg-warning" : "bg-success") px-3 py-2">@Model.IsMember</span>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="col-sm-8 col-md-8">
+                <div class="card shadow-sm v-auto">
+                    <div class="card-header bg-secondary text-white d-flex align-items-center justify-content-between">
+                        <span class="fw-bold">Booked Classes / Activities</span>
+                        <span class="badge bg-light text-dark">
+                            @(Model.Bookings?.Count ?? 0) Bookings
+                        </span>
+                    </div>
+                    <div class="card-body p-0">
+                        @if (Model.Bookings != null && Model.Bookings.Any())
+                        {
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <td>Class Name</td>
+                                            <td>Date</td>
+                                            <td>time</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var b in Model.Bookings)
+                                        {
+                                            bool isPastClass = b.ClassTime < DateTime.UtcNow;
+                                            bool islesThanTowHours = b.ClassTime <= b.ClassTime.AddHours(2);
+
+                                            <tr>
+                                                <td
+                                                    class="@(isPastClass ? "text-muted text-decoration-line-through" : "fw-bold text-primary")">
+                                                    @b.ClassName
+
+                                                </td>
+                                                <td class="@(isPastClass ? "text-muted" : "")">
+                                                    @b.ClassTime.ToString("dd/MM/yyyy hh:mm tt")
+                                                </td>
+
+                                                <td class="text-center">
+                                                    @if (isPastClass)
+                                                    {
+                                                        <span class="badge bg-secondary-subtle text-secondary px-3 py-2 rounded-pill">
+                                                            Ended
+                                                        </span>
+                                                    }
+                                                    else if (islesThanTowHours)
+                                                    {
+                                                        <span class="badge bg-warning-subtle text-warning px-3 py-2 rounded-pill"
+                                                              title="Cancellations are locked 2 hours">
+                                                            Locked
+                                                        </span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <form asp-action="CancelBooking" asp-route-bookingId="@b.BookingId"
+                                                              method="post">
+
+                                                            @Html.AntiForgeryToken()
+                                                            <button type="submit" class="btn btn-outline-danger">Unbook</button>
+                                                        </form>
+                                                    }
+                                                </td>
+
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="text-center py-5">
+                                <p class="text-muted mb-0 fs-5">No bookings yet</p>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger text-center" role="alert">
+            Unable to load user profile data. Please try logging in again.
+        </div>
+    }
+</div>

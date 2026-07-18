@@ -1,0 +1,139 @@
+@using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor
+@model IEnumerable<userMangment.Models.GymClass>
+@{
+    ViewData["Title"] = "User Boking";
+
+}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Gym Classes</title>
+</head>
+
+<body>
+
+    <!-- رسائل التنبيه والخطأ -->
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger col-6 alert-dismissible fade show" role="alert">
+            <p>@TempData["Error"]</p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success col-6 alert-dismissible fade show" role="alert">
+            <p>@TempData["Success"]</p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["EventAlert"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["EventAlert"]
+        </div>
+    }
+
+    <!-- الترحيب بالمستخدم -->
+    <div class="text-center my-4">
+        <h1 class="display-4">Welcome</h1>
+        @if (User.Identity != null && User.Identity.IsAuthenticated)
+        {
+            <p>Welcome Back @User.Identity.Name</p>
+        }
+        else
+        {
+            <p>You are a visitor</p>
+        }
+    </div>
+
+    <!-- عرض البيانات أو التنبيه بالخلو -->
+    @if (Model == null || !Model.Any())
+    {
+        <h3>No Gym Classes</h3>
+    }
+    else
+    {
+        <table class="table table-dark table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Class Name</th>
+                    <th scope="col">Duration</th>
+                    <th scope="col">End time</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Booking Action</th>
+                    <th scope="col">Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.Duration</td>
+                        <td>@item.EndTime</td>
+                        <td>@item.Desctiption</td>
+
+                        <!-- عمود الأكشن الخاص بالحجز والإلغاء (منظم بالمنطق الزمني الجديد) -->
+                        <td>
+                            <form asp-action="ToggleBooking" asp-route-id="@item.Id" method="post">
+                                @if (item.IsBookingClosed())
+                                {
+                                    <button type="button" class="btn btn-outline-secondary" disabled>Class Started</button>
+                                }
+                                else
+                                {
+                                    @if (User.Identity != null && User.Identity.IsAuthenticated &&
+                                         item.AttendingMembers != null && item.AttendingMembers.Any(u => u.UserName ==
+                        User.Identity.Name))
+                                    {
+                                        if (!item.IsForbiddenCancle())
+                                        {
+                                            <button type="submit" class="btn btn-outline-danger">Unbook</button>
+                                        }
+                                        else
+                                        {
+                                            <button type="button" class="btn btn-outline-warning" disabled>
+                                                Unbook (Locked - Less than 2h)
+                                            </button>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <button type="submit" class="btn btn-outline-primary">Book</button>
+                                    }
+                                }
+                            </form>
+                        </td>
+
+                        <!-- زر جلب التفاصيل -->
+                        <td>
+                            <button onclick="getData(@item.Id)" class="btn btn-sm btn-info">Details</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <!-- قسم عرض التفاصيل (موقعه الصحيح خارج الـ Table تماماً لئلا يكسر الهيكل) -->
+        <div class="container mt-4">
+            <div id="detailsSection" style="display: none;" class="card text-dark">
+                <div class="card-header bg-dark text-white">Class Details</div>
+                <ul id="memberList" class="list-group list-group-flush">
+                    <!-- الأعضاء سيتم حقنهم هنا عبر الـ JavaScript/Ajax -->
+                </ul>
+            </div>
+        </div>
+    }
+
+   
+</body>
+
+
+
+</html>

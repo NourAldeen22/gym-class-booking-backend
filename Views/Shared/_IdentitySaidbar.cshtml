@@ -1,0 +1,100 @@
+<ul class="nav nav-pills flex-column mb-auto w-80 sidbar-profile">
+
+    <!-- رابط صفحة الحجوزات (MVC عادي) -->
+    <li class="nav-item">
+        <a class="nav-link active d-flex align-items-center gap-2" asp-controller="User" asp-action="UserProfile">
+            <i class="bi bi-calendar-check fs-5"></i>
+            <span class="d-none d-sm-inline">UserProfile</span>
+        </a>
+    </li>
+
+    <!-- رابط تغيير كلمة السر (Identity) -->
+    <li class="nav-item">
+        <a class="nav-link link-dark" asp-area="Identity" asp-page="/Account/Manage/ChangePassword">
+            <i class="bi bi-key fs-5"></i> تغيير كلمة المرور
+        </a>
+    </li>
+
+    <!-- رابط تعديل الإيميل والهاتف (Identity) -->
+    <li class="nav-item link-dark">
+        <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index">
+            <i class="bi bi-person-gear"></i> إعدادات الحساب الأساسية
+        </a>
+    </li>
+
+
+    <partial name="_AdminMenu" />
+
+    
+</ul>
+
+
+
+@* <div class="container-fluid mt-4">
+
+        <div class="row">
+
+            <!-- Sidebar -->
+            <div class="col-12 col-md-3 col-lg-2 mb-4">
+                <!-- nav-pills هنا -->
+                سيسس
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-12 col-md-9 col-lg-10">
+
+                <div class="row">
+
+                    <!-- Profile Card -->
+                    <div class="col-12 col-md-6 col-lg-4 mb-4">
+                        <!-- card -->
+                    </div>
+
+                    <!-- Bookings -->
+                    <div class="col-12 col-md-9 col-lg-8 mb-4">
+                        <!-- table or cards -->
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div> *@
+
+
+
+@* <div class="col-12 col-md-3">
+
+    <ul class="nav flex-column nav-pills shadow-sm p-3 rounded bg-white">
+
+        <li class="nav-item mb-2">
+            <a class="nav-link d-flex align-items-center @(ViewContext.RouteData.Values["action"]!.ToString() == "UserProfile" ?
+"active" : "")"
+               asp-controller="GymClass" asp-action="UserProfile">
+                <i class="bi bi-person-circle me-2"></i>
+                User Profile
+            </a>
+        </li>
+
+        <li class="nav-item mb-2">
+            <a class="nav-link d-flex align-items-center" asp-area="Identity" asp-page="/Account/Manage/ChangePassword">
+                <i class="bi bi-key me-2"></i>
+                تغيير كلمة المرور
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link d-flex align-items-center" asp-area="Identity" asp-page="/Account/Manage/Index">
+                <i class="bi bi-gear me-2"></i>
+                إعدادات الحساب الأساسية
+            </a>
+        </li>
+
+    </ul>
+
+</div> *@
+
+
+

@@ -1,0 +1,407 @@
+:root {
+  --bg-color: #f8fafc; /* لون النصف الآخر (أبيض عاجي مريح جداً) */
+  --login-form-bg: #000000; /* النصف الخاص بالصورة (أسود خالص) */
+  --text-color: #0f172a; /* نصوص داكنة جداً لتظهر بوضوح فوق الخلفية البيضاء */
+  --heading-color: #ff6b00; /* برتقالي ناري للعناوين */
+  --card-bg: #ffffff; /* خلفية خانات الإدخال (Inputs) بيضاء ناصعة */
+  --button-bg: #ff6b00; /* زر الدخول برتقالي مشرق */
+  --button-text: #ffffff; /* نص الزر أبيض */
+  --border-color: #ced4da;
+  --shadow-color: rgba(255, 107, 0, 0.25);
+  --shadow-hover: rgba(255, 107, 0, 0.3);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  background-color: var(--bg-color);
+  margin: 0;
+  color: var(--text-color);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh !important;
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    sans-serif;
+}
+main[role="main"] {
+  padding-top: 20px;
+  padding-bottom: 40px;
+  flex: 1; /* اختيارياً للتأكد من تمدد الـ main أيضاً داخل الحاوية */
+}
+
+/* الفوتر في الموبايل وكل الشاشات */
+.footer {
+  position: relative !important;
+  width: 100%;
+  background-color: #ffffff;
+  border-top: 1px solid #dee2e6;
+  line-height: 50px !important;
+
+  /* 3. منع الانضغاط في نظام الـ Flex */
+  margin-top: auto;
+}
+h1,
+h2,
+h3 {
+  color: var(--heading-color);
+}
+
+/* ============================================
+   تنسيق الأزرار وحقول الإدخال (Focus)
+   ============================================ */
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+  box-shadow: 0 0 0 0.2rem var(--shadow-color);
+  border-color: var(--heading-color);
+  outline: none;
+}
+
+/* ============================================
+   تنسيق زر الإرسال
+   ============================================ */
+.btn-primary {
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  border: none;
+  padding: 12px 24px;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--button-bg) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--shadow-hover);
+}
+
+.btn-primary:focus {
+  box-shadow: 0 0 0 0.2rem var(--shadow-color);
+}
+
+.form-control {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  border-color: var(--border-color);
+  border-radius: 8px;
+  padding: 12px 15px;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: var(--heading-color);
+  box-shadow: 0 0 0 0.2rem var(--shadow-color);
+}
+
+.form-floating > .form-control-plaintext::placeholder,
+.form-floating > .form-control::placeholder {
+  color: var(--text-color);
+  text-align: end;
+  opacity: 0.6;
+  font-size: 0.9rem;
+}
+
+/* ✅ تغيير لون الـ label عند التركيز */
+.form-floating > .form-control:focus ~ label {
+  color: var(--heading-color);
+}
+
+/* ============================================
+   تنسيق رسائل التحقق (Validation)
+   ============================================ */
+.field-validation-error,
+.text-danger {
+  color: var(--button-bg);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+/* ✅ تنسيق الحقول الصحيحة والخاطئة */
+.form-control.is-valid {
+  border-color: #198754;
+  box-shadow: 0 0 0 0.2rem var(--shadow-color);
+}
+.form-control.is-invalid {
+  border-color: #dc3545;
+  box-shadow: 0 0 0 0.2rem var(--shadow-color);
+}
+
+/* .container { */
+/* margin-left: auto; */
+/* flex: 1 0 auto; */
+/* display: flex; */
+/* flex-direction: column; */
+/* } */
+
+/* ============================================
+   تنسيق الفورم كارد
+   ============================================ */
+.form-card {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px --shadow-color;
+  padding: 30px;
+}
+
+.form-card .form-control {
+  background-color: var(--button-text);
+}
+
+.form-card .form-control:focus {
+  background-color: var(--button-text);
+}
+
+/* ============================================
+  login costum
+   ============================================ */
+
+.login-page-wrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  justify-items: center;
+  padding: 15px 0;
+}
+
+.login-left-side {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* ينزل النصوص تلقائياً لأسفل الصورة */
+  align-items: flex-start; /* يبدأ النصوص من اليسار بدقة */
+
+  /* دمج الصورة مع تدرج لوني أسود شفاف في الأسفل فقط لحماية وضوح النص */
+  background:
+    linear-gradient(
+      to top,
+      var(--shadow-color) 0%,
+      var(--shadow-color) 60%,
+      transparent 100%
+    ),
+    url("/image/login-image.jpg");
+
+  background-position: center;
+  background-size: cover;
+  height: 350px;
+  border-radius: 8px;
+
+  /* الظل الجانبي الذي يفصل الصورة عن حقول الإدخال */
+  box-shadow: 5px 0 25px rgba(0, 0, 0, 0.2);
+  z-index: 2;
+}
+
+/* تنسيق حاوية النصوص داخل الصورة */
+.login-text {
+  color: var(--button-text);
+  padding: 40px; /* مسافة مريحة للنصوص من الحواف السفلى واليسرى */
+  width: 100%;
+}
+
+.login-text h2 {
+  font-size: 2.3rem;
+  font-weight: bold;
+  color: var(--heading-color); /* اللون البرتقالي الجميل الخاص بهويتك */
+  margin-bottom: 5px;
+}
+
+.login-text p {
+  font-size: 1.1rem;
+  color: var(--border-color);
+  margin-bottom: 0;
+}
+
+/* Admin page - user profile with sidebar custom style*/
+.main-wrapper {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+
+  grid-template-areas: "sidebar content";
+
+  min-height: calc(auto - 2vh);
+  width: auto;
+  /* background-color; */
+  margin: 0;
+}
+
+/* نربط السايد بار بمكانه المحدد في الـ Grid */
+.custom-sidebar {
+  grid-area: sidebar;
+  background-color: var(--bg-color);
+  border-right: 1px solid var(--border-color); /* غيرنا الفاصل ليكون جهة اليسار لأن السايدبار باليسار */
+  padding: 20px 15px;
+}
+
+/* نربط المحتوى بمكانه المحدد في الـ Grid */
+.main-content {
+  grid-area: content;
+  padding: 10px;
+  overflow-y: auto;
+  margin: 0;
+}
+
+/* تنسيق الروابط داخل السايدبار لـتفرش بكامل العرض وتصبح عريضة */
+.custom-sidebar .nav-link {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* مسافة بين الأيقونة والنص */
+  width: 100%; /* يجعل الرابط يملأ عرض السايدبار بالكامل */
+  padding: 12px 15px; /* يجعل زر اللينك عريضاً وسهل الضغط عليه */
+  border-radius: 6px; /* حواف ناعمة للأزرار */
+  color: var(--text-color);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  margin-left: 0;
+}
+
+/* تأثير جميل عند تمرير الماوس فوق الرابط */
+.custom-sidebar .nav-link:hover {
+  background-color: var(--button-bg);
+  color: var(--button-text);
+}
+
+/* الرابط النشط حالياً */
+.custom-sidebar .nav-link.active {
+  background-color: var(--button-bg);
+  color: var(--button-text);
+}
+
+/* تنسيق القائمة الأساسية */
+.sidbar-profile {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  width: 100%;
+}
+
+/* تباعد مريح بين أزرار القائمة */
+.sidbar-profile .nav-item {
+  margin-bottom: 8px;
+}
+
+/* التنسيق الخارق للروابط داخل السايدبار */
+.sidbar-profile .nav-link {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* مسافة ثابتة وأنيقة بين الأيقونة والنص */
+  padding: 12px 16px; /* تكبير حجم الزر ليصبح مريحاً للضغط */
+  border-radius: 8px; /* حواف دائرية ناعمة وحديثة */
+  color: #495057; /* لون نص هادئ ومريح للعين */
+  font-weight: 500; /* سماكة الخط */
+  text-decoration: none;
+  transition: all 0.25s ease; /* حركة ناعمة عند تمرير الماوس */
+  width: 100%; /* يضمن فرد الرابط بكامل عرض السايدبار */
+}
+
+/* تأثير تمرير الماوس (Hover) */
+.sidbar-profile .nav-link:hover {
+  background-color: #f1f3f5; /* خلفية رمادية خفيفة جداً */
+  color: #0d6efd; /* تحول النص للون الأزرق */
+  padding-right: 20px; /* حركة إزاحة بسيطة تعطي شعوراً بالتفاعل (اختياري) */
+}
+
+/* تنسيق الأيقونات داخل الروابط */
+.sidbar-profile .nav-link i {
+  font-size: 1.2rem; /* حجم متناسق للأيقونات */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* الرابط النشط حالياً (Active) */
+.sidbar-profile .nav-link.active {
+  background-color: #0d6efd !important; /* لون أزرق براند بروكسل */
+  color: #ffffff !important; /* نص أبيض ناصع */
+  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.2); /* ظلال خفيفة تعطي عمقاً فخماً */
+}
+
+@media (min-width: 768px) {
+  html {
+    height: 100%;
+  }
+
+  /* اترك الـ width لـ Bootstrap بالكامل لكي لا يحدث تداخل */
+  .login-page-wrapper {
+    grid-template-columns: 1fr;
+    padding: 0;
+    align-items: center;
+    justify-items: stretch;
+    gap: 0;
+    margin: 10px;
+  }
+
+  .login-left-side {
+    /* هنا نتحكم في الارتفاع ليتوافق مع الفوتر والـ Layout */
+    /* height: calc(100vh - 140px); */
+    min-height: 550px;
+  }
+
+  .login-img {
+    height: 100%;
+  }
+
+  .login-row {
+    /* يضمن أن الـ Row بالكامل يأخذ المساحة بين الهيدر والفوتر */
+    height: calc(100vh - 140px);
+    min-height: 550px;
+  }
+
+  .login-grid-container {
+    /* نقسم الشاشة نصفين متساويين 50% لكل طرف، أو يمكنك استخدام 1fr 1fr */
+    grid-template-columns: 1fr 1fr;
+
+    /* طرح مساحة الفوتر والهيدر (مثلاً 140px) يمنع تخطي الفوتر نهائياً */
+    /* height: calc(100vh - 140px); */
+    min-height: 550px;
+  }
+
+  .grid-image-side {
+    height: 100%; /* تمتد الصورة بكامل الارتفاع المحسوب للـ Grid */
+    padding: 60px;
+  }
+
+  .grid-form-side {
+    height: 100%;
+  }
+
+  /* تنسيق النصوص */
+  .login-text {
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+  }
+  .login-text h2 {
+    font-size: 2.5rem;
+    font-weight: bold;
+  }
+  .login-text p {
+    font-size: 1.2rem;
+    margin-bottom: 0;
+  }
+
+  .footer {
+    position: relative !important;
+    bottom: auto !important;
+  }
+}

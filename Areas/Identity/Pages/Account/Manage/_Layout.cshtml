@@ -1,0 +1,29 @@
+@{
+    // إجبار النظام على استخدام الـ Layout الرئيسي للمشروع
+    Layout = "~/Views/Shared/_CustomSecurityLayout.cshtml";
+}
+
+@* <div class="manage-account-container">
+    <h2 class="mb-4">إعدادات الحساب</h2>
+    <li class="nav-item">
+        <a class="nav-link bg-info text-white mb-2" href="/GymClass/UserProfile">
+            <i class="bi bi-arrow-left"></i> Back to Gym Profile
+        </a>
+    </li>
+    <hr />
+    <div class="row">
+        <div class="col-md-3">
+            @* استدعاء قائمة التنقل (التي أرسلت كودها سابقاً) *@
+@* <partial name="_ManageNav" />
+        </div>
+        <div class="col-md-9">
+            هنا سيتم حقن صفحات (Index, Password, Email)
+            @RenderBody()
+        </div>
+    </div>
+</div> *@
+
+@RenderBody()
+@RenderSection("Scripts", required: false)
+
+  

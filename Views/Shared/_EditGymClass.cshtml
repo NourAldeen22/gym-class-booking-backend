@@ -1,0 +1,34 @@
+@model userMangment.ViewModels.GymClassFormViewModel
+
+<form asp-action="EditGymClass" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div asp-validation-summary="All"></div>
+    <div class="form-group">
+        <label asp-for="ClassName">Name</label>
+        <input class="form-control" placeholder="Enter class name" type="text" asp-for="ClassName">
+        <span asp-validation-for="ClassName"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="StartTime">Start Time</label>
+        <input type="datetime-local" class="form-control" placeholder="Start time" asp-for="StartTime" />
+        <span asp-validation-for="StartTime"></span>
+    </div>
+
+            
+    <div class="form-group">
+        <label asp-for="Duration">Duration</label>
+        <input type="time" class="form-control" placeholder="Duration" asp-for="Duration" />
+        <span asp-validation-for="Duration"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description">Desctiption</label>
+        <input type="text" class="form-control" placeholder="Description" asp-for="Description" />
+        <span asp-validation-for="Description"></span>
+    </div>
+
+            
+    <button type="submit" class="btn btn-primary">Creat Class</button>
+
+</form>

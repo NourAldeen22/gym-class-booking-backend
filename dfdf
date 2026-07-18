@@ -1,0 +1,10 @@
+*.db
+*.db-shm
+*.db-wal
+*.mdf
+*.ldf
+appsettings.Development.json
+bin/
+obj/
+.vscode
+.vs

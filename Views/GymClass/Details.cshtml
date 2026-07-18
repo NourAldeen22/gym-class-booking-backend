@@ -1,0 +1,30 @@
+@model userMangment.Models.GymClass
+@{
+    ViewData["Titlel"] = "Details";
+}
+
+
+@* <p> @Html.DisplayFor(mode => Model.AttendingMembers)</p> *@
+
+@if (Model != null)
+{
+    <div class="card">
+        <div class="card-header">@Html.DisplayFor(m => m.Name)</div>
+        @foreach (var member in Model.AttendingMembers)
+        {
+
+           
+            <ul class="list-group list-grop-flush">
+                <li class="list-group-item">@Html.DisplayFor(item => member.UserName)</li>
+                @* <li> <span class="badge bg-info text-dark me-1">@string.Join(" ", member.UserName)</span></li> *@
+
+            </ul>
+
+        }
+    </div>
+}
+else
+{
+    <p>@Html.Display("no data found")</p>
+}
+

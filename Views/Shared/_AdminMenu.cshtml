@@ -1,0 +1,21 @@
+@if (User.IsInRole("Admin"))
+{
+    <li class="nav-item">
+        <a class="nav-link link-dark" asp-controller="GymClass" asp-action="CreateGymClass">
+            <i class="bi bi-plus-circle fs-5"></i> Create Course
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link link-dark" asp-controller="Admin" asp-action="AdminDashboard">
+            <i class="bi bi-speedometer2"></i> Dashboard
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link link-dark" asp-controller="GymClass" asp-action="Create">
+            <i class="bi bi-speedometer2"></i> Dashboard
+        </a>
+    </li>
+
+}

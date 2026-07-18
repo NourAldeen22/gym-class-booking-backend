@@ -1,0 +1,88 @@
+@model userMangment.ViewModels.GymClassFormViewModel
+@{
+    ViewData["Titlel"] = "Crete New Class";
+    if (User.IsInRole("Admin"))
+    {
+        Layout = "~/Views/Shared/_CustomSecurityLayout.cshtml";
+    }
+
+    @* var returnUrl = ViewBag.ReturnUrl as string ?? Url.Action("AdminDashboard", "Admin"); *@
+}
+
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Create</title>
+</head>
+
+<body>
+
+    @if (User.IsInRole("Admin"))
+    {
+
+        <div class="container mt-1">
+            <div class="row justify-content-center">
+                <div class="col-lg-6 col-md-4">
+
+                    <form asp-action="CreateGymClass" class="shadow p-3">
+
+                        @* <input type="hidden" name="returnUrl" value="@returnUrl" /> *@
+
+                        <div asp-validation-summary="All">
+                        </div>
+                        <div class="mb-2">
+                            <div class="form-group">
+                                <label for="name">Class Name</label>
+                                <input class="form-control bs-border-color-rgb" placeholder="Enter class name" type="text"
+                                       asp-for="ClassName">
+                                <span asp-validation-for="ClassName"></span>
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <div class="form-group">
+                                <label asp-for="StartTime">Start Time</label>
+                                <input type="datetime-local" class="form-control" placeholder="Start time"
+                                       asp-for="StartTime" />
+                                <span asp-validation-for="StartTime"></span>
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <div class="form-group">
+                                <label asp-for="Duration">Duration</label>
+                                <input type="time" class="form-control" placeholder="Duration" asp-for="Duration" />
+                                <span asp-validation-for="Duration"></span>
+                            </div>
+                        </div>
+                        <div class="mb-2">
+
+                            
+                            <div class="form-group">
+                                <label asp-for="Description">Desctiption</label>
+                                <input type="text" class="form-control" placeholder="Description" asp-for="Description" />
+                                <span asp-validation-for="Description"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <button type="submit" class="btn btn-primary">Creat Class</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    }
+    else
+    {
+        <p>This page is protected</p>
+    }
+
+        
+</body>
+
+</html>
