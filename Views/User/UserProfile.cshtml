@@ -34,18 +34,32 @@
         <div class="row justify-content-md-center">
             <div class="col-8 col-md-4">
                 <div class="card shadow-sm p-4 text-center h-100">
-                    <div class="profile-image-wrapper">
-                        @* <img src="/images/user.png" class="rounded-circle mb-3" width="100" alt="User Image"> *@
-                    </div>
+                    @* <div class="profile-image-wrapper">
+      
+                    </div> *@
                     <h4>@Model.FullName</h4>
 
                     <p class="text-muted text break">@Model.Email</p>
                     <p class="text-mutex">phone</p>
 
-                    <div class="mb-4">
-                        <span class="badge @(Model.IsMember ? "bg-warning" : "bg-success") px-3 py-2">@Model.IsMember</span>
-                    </div>
+                    @if(Model.Role != null && Model.Role.Any())
+                    {
+                        @foreach (var role in Model.Role)
+                        {
 
+                            var badgeClass = role switch
+                            {
+                                "Admin" => "bg-danger",
+                                "Member" => "bg-success",
+                                _ => "bg-secondary"
+                            };
+                            <span class="badge @badgeClass px-3 py-2 me-1">@role</span>
+                        }
+
+                    }else
+                    {
+                         <span class="badge bg-secondary px-3 py-2">User</span>
+                    }
 
                 </div>
             </div>
@@ -73,27 +87,27 @@
                                     <tbody>
                                         @foreach (var b in Model.Bookings)
                                         {
-                                            bool isPastClass = b.ClassTime < DateTime.UtcNow;
-                                            bool islesThanTowHours = b.ClassTime <= b.ClassTime.AddHours(2);
+                                            @* bool isPastClass = b.isLocked < DateTime.UtcNow;
+                                            bool islesThanTowHours = b.ClassTime < b.ClassTime.AddHours(2); *@
 
                                             <tr>
                                                 <td
-                                                    class="@(isPastClass ? "text-muted text-decoration-line-through" : "fw-bold text-primary")">
+                                                    class="@(b.IsPast ? "text-muted text-decoration-line-through" : "fw-bold text-primary")">
                                                     @b.ClassName
 
                                                 </td>
-                                                <td class="@(isPastClass ? "text-muted" : "")">
-                                                    @b.ClassTime.ToString("dd/MM/yyyy hh:mm tt")
+                                                <td class="@(b.IsPast ? "text-muted" : "")">
+                                                    @b.StartTime.ToString("dd/MM/yyyy hh:mm tt")
                                                 </td>
 
                                                 <td class="text-center">
-                                                    @if (isPastClass)
+                                                    @if(b.IsPast)
                                                     {
                                                         <span class="badge bg-secondary-subtle text-secondary px-3 py-2 rounded-pill">
                                                             Ended
                                                         </span>
                                                     }
-                                                    else if (islesThanTowHours)
+                                                    else if(b.isLocked)
                                                     {
                                                         <span class="badge bg-warning-subtle text-warning px-3 py-2 rounded-pill"
                                                               title="Cancellations are locked 2 hours">

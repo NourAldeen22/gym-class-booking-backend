@@ -138,8 +138,6 @@ public async Task<ApplicationUser?> AddNewUserAsync(string firstName , string la
     return null;
 
 }
-
-
 public async Task<string> MakeMemberAsync(string userId, string currentAdminId)
 {
 
@@ -219,7 +217,6 @@ public async Task<int> isUppComingClassAsync()
     var allclasses = GetAllClassesAsync();
 
      return await allclasses.CountAsync(i=> i.StartTime >= DateTime.UtcNow);
-
 }
 
 

@@ -23,7 +23,7 @@ public class BookingService : IBookingService
     }
   
   
-    public async Task <bool> ToggleBookingAsync(int id, string userId )
+    public async Task<bool> ToggleBookingAsync(int id, string userId )
     {
         var gymClass = await _context.GymClasses.Include(i=> i.AttendingMembers).FirstOrDefaultAsync(i=> i.Id == id);
 
@@ -44,7 +44,7 @@ public class BookingService : IBookingService
 
         if(gymClass.AttendingMembers.Any(u=> u.Id == userId))
         {
-            if(gymClass.IsForbiddenCancle())
+            if(IsForbiddenCancle(gymClass))
             {
                 _logger.LogWarning("Cancellations are not permitted less than two hours!");
                 return false;
@@ -56,7 +56,7 @@ public class BookingService : IBookingService
         }   
         else
         {
-            if(gymClass.IsBookingClosed())
+            if(IsBookingClosed(gymClass))
             {
                 _logger.LogWarning("The lesson has already started; you cannot book.");
                 return false;
@@ -74,6 +74,19 @@ public class BookingService : IBookingService
     }
 
 
+    private bool IsBookingClosed(GymClass gymClass)
+    {
+        return DateTime.UtcNow >= gymClass.StartTime;
+    }
 
-    
+    private bool IsForbiddenCancle(GymClass gymClass)
+    {
+        return DateTime.UtcNow >= gymClass.StartTime.AddHours(2);
+
+    }
+
+
+
+
+
 }

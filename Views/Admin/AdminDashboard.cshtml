@@ -2,7 +2,7 @@
 @model userMangment.ViewModels.AdminDashboardViewModel
 @{
     ViewData["Title"] = "Admin Dashboard";
-    // هنا تستدعي اللي آوت الخاص بنظام الحماية لديك لضمان الهيدر والفوتر للموقع
+   
     Layout = "~/Views/Shared/_CustomSecurityLayout.cshtml";
 }
 
@@ -28,27 +28,27 @@
 
 
     <h2>Admin Dashboard</h2>
-    <div class="row my-4">
-        <div class="col-md-6">
-            <div class="card bg-primary text-white p-3">
-                <h5>Total Users: @Model.TotalUsersInSystem</h5>
+    <div class="row my-4 w-100 text-center">
+        <div class="col-12 col-md-4 mb-4">
+            <div class="card shadow border-0 p-3 bg-white h-100">
+                <h4 class="text-muted mb-1">Total Users: @Model.TotalUsersInSystem</h4>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="card bg-success text-white p-3">
-                <h5>UpcomingClasses: @Model.UpcomingClassesCount</h5>
+        <div class="col-12 col-md-4 mb-4">
+            <div class="card shadow border-0 p-3 bg-white h-100">
+                <h4 class="text-info-emphasis mb-1"> Next Classes: @Model.UpcomingClassesCount</h4>
             </div>
         </div>
     </div>
 
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
-        <i class="bi bi-person-plus"></i>Add a new user
+    <div class="d-flex justify-content-lg-start mb-3">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
+            <i class="bi bi-person-plus"></i>Add a new user
 
-    </button>
-
+        </button>
+    </div>
+   
     <div class="table-responsive">
-
-    
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>

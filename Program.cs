@@ -10,8 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using System.Runtime.CompilerServices;
 using userMangment.Services;
-// using userMangment.Models;
-// using userMangment.Interfaces;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,33 +45,28 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>{
 
 var app = builder.Build();
 
-// using(var scope = app.Services.CreateScope())
-// {
+ using(var scope = app.Services.CreateScope())
+ {
 
-//     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-//     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
-//     if (!await roleManager.RoleExistsAsync("Admin"))
-//     {
-//         await roleManager.CreateAsync(new IdentityRole("Admin"));
-//     }
+     if (!await roleManager.RoleExistsAsync("Admin"))
+     {
+         await roleManager.CreateAsync(new IdentityRole("Admin"));
+     }
 
-//     string adminEmail = "user@test.com";
-//     var adminUser = await userManager.FindByEmailAsync(adminEmail);
+     string adminEmail = "me@test.com";
+     var adminUser = await userManager.FindByEmailAsync(adminEmail);
 
-//     if(adminUser != null)
-//     {
-//         if(!await userManager.IsInRoleAsync(adminUser,"Admin"))
-//         {
-//             await userManager.AddToRoleAsync(adminUser,"Admin");
-//         }
-//     }
-
-
-
-
-
-// }
+     if(adminUser != null)
+     {
+         if(!await userManager.IsInRoleAsync(adminUser,"Admin"))
+         {
+             await userManager.AddToRoleAsync(adminUser,"Admin");
+         }
+     }
+ }
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -94,7 +88,7 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
+    pattern: "{controller=User}/{action=UserProfile}/{id?}")
     .WithStaticAssets();
 
 app.MapRazorPages();

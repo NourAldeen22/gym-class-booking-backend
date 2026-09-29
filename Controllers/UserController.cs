@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using userMangment.ViewModels;
@@ -35,20 +36,23 @@ public class UserController : Controller
         {
             return NotFound();
         }
-        
+
+        var roles = await _userManager.GetRolesAsync(user);
+
         var viewModel = new UserProfileViewModel
         {
-          UserId = user.Id,
-          FullName = user.FullName,
-          Email = user.Email,
-          IsMember = User.IsInRole("Member"),
-          Bookings = user.AttendedClasses.OrderBy(i=> i.StartTime).Select(b=> new UserBookingViewModel
+            UserId = user.Id,
+            FullName = user.FullName,
+            Email = user.Email,
+            //IsMember = User
+          Role = roles.ToList(),
+          Bookings = user.AttendedClasses.OrderBy(i => i.StartTime).Select(b => new UserBookingViewModel
           {
-           
-            BookingId = b.Id,
-            ClassName = b.Name,
-            ClassTime = b.EndTime
-          }).ToList()
+              BookingId = b.Id,
+              ClassName = b.Name,
+              StartTime = b.StartTime,
+              EndTime = b.StartTime + b.Duration
+          }).ToList() ?? new List<UserBookingViewModel>()
         };
 
        if(user.AttendedClasses == null|| !user.AttendedClasses.Any())

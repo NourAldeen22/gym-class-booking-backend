@@ -4,6 +4,13 @@
 
 @if (Model != null)
 {
-    <partial name="_EditGymClass" />
+	<partial name="_EditGymClass" model="Model"/>
 }
+else
+{
+	<div class="alert alert-danger">Class details could not be loaded.</div>
+}
+
+
+
 

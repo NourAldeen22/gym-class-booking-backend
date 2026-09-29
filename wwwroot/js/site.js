@@ -89,12 +89,23 @@ togglePassword.forEach((toggle) => {
   });
 });
 
-// const deleteButtons = document.querySelectorAll(".btn-delete");
-// deleteButtons.forEach((btn) => {
-//   btn.addEventListener("click", function (e) {
-//     e.preventDefault();
-//     const modal = document.querySelector(".delete-modal");
+ const deleteButtons = document.querySelectorAll(".btn-delete");
+ deleteButtons.forEach((btn) => {
+   btn.addEventListener("click", function (e) {
+       e.preventDefault();
+       const itemName = this.getAttribute('data-name');
 
-//     modal.classList.toggle("show-modal");
-//   });
-// });
+       const itemId = this.getAttribute("data-id");
+
+       document.getElementById("itemToDeleteName").textContent = itemName;
+       document.getElementById("itemToDeleteId").value = itemId;
+
+       const modal = document.querySelector(".delete-modal");
+
+       const bsModal = new bootstrap.Modal(modal);
+       bsModal.show();
+       //modal.classList.add("modal");
+     
+     
+   });
+ });

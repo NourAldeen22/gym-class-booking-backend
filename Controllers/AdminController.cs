@@ -33,13 +33,12 @@ public async Task<IActionResult> AdminDashboard()
     }
 
     var currentAdmin = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
     if (string.IsNullOrWhiteSpace(currentAdmin))
     {
-        return Challenge(); // أو RedirectToAction("Login", "Account")
+        return Challenge();
     }
 
-   
-   
     var userViewModels = await _adminService.GetUserForAdminAsync(currentAdmin);
 
     var viewModel = new AdminDashboardViewModel
@@ -103,9 +102,6 @@ public async Task<IActionResult> AddNewUser(AddUserViewModel model)
         lastName:model.LastName , 
         email:model.Email, 
         password:model.Password
-       
-        
-        
     );
 
     if(resultuser == null)

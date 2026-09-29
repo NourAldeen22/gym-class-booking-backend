@@ -1,6 +1,6 @@
 @model userMangment.ViewModels.GymClassFormViewModel
 
-<form asp-action="EditGymClass" method="post">
+<form asp-controller="GymClass" asp-action="EditGymClass" asp-route-id="@Model.Id" method="post">
     <input type="hidden" asp-for="Id" />
     <div asp-validation-summary="All"></div>
     <div class="form-group">

@@ -33,62 +33,62 @@ public class HomeController : Controller
 
     {
 
-        if(!await _roleManager.RoleExistsAsync("Admin"))
-        {
-           await _roleManager.CreateAsync( new IdentityRole("Admin")); 
-        }
+       // if(!await _roleManager.RoleExistsAsync("Admin"))
+       // {
+       //    await _roleManager.CreateAsync( new IdentityRole("Admin")); 
+       // }
 
-        var user = new ApplicationUser
-       {
-         UserName = "me@test.com",
-         Email = "me@test.com",
-        //  EmailConfirmed = true
-        FirstName = "Nour",
-        LastName = "Dano",
-        TimeOfRegistration = DateTime.UtcNow
+       // var user = new ApplicationUser
+       //{
+       //  UserName = "me@test.com",
+       //  Email = "me@test.com",
+       // //  EmailConfirmed = true
+       // FirstName = "Nour",
+       // LastName = "Dano",
+       // TimeOfRegistration = DateTime.UtcNow
            
-       };
+       //};
         
-       string password= "Password123!";
+       //string password= "Password123!";
 
       
 
-        var existingUser = await _userManager.FindByEmailAsync(user.Email);
-        if (existingUser == null)
-        {
-            var result = await _userManager.CreateAsync(user, password);
-            if(result.Succeeded)
-        {
-            existingUser = user; // الآن user تم إنشاؤه
-        }
-        else
-        {
-        foreach(var error in result.Errors)
-        {
-            Console.WriteLine(error.Description);
-        }
-             return View(); // الخروج إذا فشل الإنشاء
-        }
+       // var existingUser = await _userManager.FindByEmailAsync(user.Email);
+       // if (existingUser == null)
+       // {
+       //     var result = await _userManager.CreateAsync(user, password);
+       //     if(result.Succeeded)
+       // {
+       //     existingUser = user; // الآن user تم إنشاؤه
+       // }
+       // else
+       // {
+       // foreach(var error in result.Errors)
+       // {
+       //     Console.WriteLine(error.Description);
+       // }
+       //      return View(); // الخروج إذا فشل الإنشاء
+       // }
         
-        }
+       // }
 
-        // إضافة المستخدم إلى الدور
-        if(!await _userManager.IsInRoleAsync(existingUser, "Admin"))
-        {
-            await _userManager.AddToRoleAsync(existingUser, "Admin");
-        }
+       // // إضافة المستخدم إلى الدور
+       // if(!await _userManager.IsInRoleAsync(existingUser, "Admin"))
+       // {
+       //     await _userManager.AddToRoleAsync(existingUser, "Admin");
+       // }
 
-        var users = await _userManager.Users.ToListAsync();
+       // var users = await _userManager.Users.ToListAsync();
 
-        if(users == null || !users.Any() )
-        {
-            ViewData["Error"] = "NO course Found";
-            return View(new List<ApplicationUser>());
-        }
+       // if(users == null || !users.Any() )
+       // {
+       //     ViewData["Error"] = "NO course Found";
+       //     return View(new List<ApplicationUser>());
+       // }
 
        
               
-        return View(users);
+        return View();
         
     }
 

@@ -15,7 +15,7 @@ namespace userMangment.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "10.0.5");
+            modelBuilder.HasAnnotation("ProductVersion", "10.0.10");
 
             modelBuilder.Entity("ApplicationUserGymClass", b =>
                 {
@@ -164,7 +164,7 @@ namespace userMangment.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("userMangment.ApplicationUser", b =>
+            modelBuilder.Entity("userMangment.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("TEXT");
@@ -237,7 +237,7 @@ namespace userMangment.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("userMangment.GymClass", b =>
+            modelBuilder.Entity("userMangment.Models.GymClass", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -262,13 +262,13 @@ namespace userMangment.Migrations
 
             modelBuilder.Entity("ApplicationUserGymClass", b =>
                 {
-                    b.HasOne("userMangment.GymClass", null)
+                    b.HasOne("userMangment.Models.GymClass", null)
                         .WithMany()
                         .HasForeignKey("AttendedClassesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("userMangment.ApplicationUser", null)
+                    b.HasOne("userMangment.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("AttendingMembersId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -286,7 +286,7 @@ namespace userMangment.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("userMangment.ApplicationUser", null)
+                    b.HasOne("userMangment.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -295,7 +295,7 @@ namespace userMangment.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("userMangment.ApplicationUser", null)
+                    b.HasOne("userMangment.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -310,7 +310,7 @@ namespace userMangment.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("userMangment.ApplicationUser", null)
+                    b.HasOne("userMangment.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -319,7 +319,7 @@ namespace userMangment.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("userMangment.ApplicationUser", null)
+                    b.HasOne("userMangment.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

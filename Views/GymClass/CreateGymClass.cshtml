@@ -6,7 +6,6 @@
         Layout = "~/Views/Shared/_CustomSecurityLayout.cshtml";
     }
 
-    @* var returnUrl = ViewBag.ReturnUrl as string ?? Url.Action("AdminDashboard", "Admin"); *@
 }
 
 
@@ -29,9 +28,6 @@
                 <div class="col-lg-6 col-md-4">
 
                     <form asp-action="CreateGymClass" class="shadow p-3">
-
-                        @* <input type="hidden" name="returnUrl" value="@returnUrl" /> *@
-
                         <div asp-validation-summary="All">
                         </div>
                         <div class="mb-2">

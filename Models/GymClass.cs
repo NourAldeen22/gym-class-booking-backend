@@ -1,10 +1,11 @@
-﻿namespace userMangment.Models;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace userMangment.Models;
 
 
 public class GymClass
 {
-    
-    public int Id {get; set;}
+    public int Id {get; set;}   
     public string? Name {get; set;}
     public DateTime StartTime {get;set;}
     public TimeSpan Duration {get; set;}
@@ -39,7 +40,7 @@ public class GymClass
 
     public bool IsForbiddenCancle()
     {
-        return DateTime.UtcNow >= StartTime.AddHours(-2);
+        return DateTime.UtcNow >= StartTime.AddHours(-2) || DateTime.UtcNow > EndTime;
         
     }
 

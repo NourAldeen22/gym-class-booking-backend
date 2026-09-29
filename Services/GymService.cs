@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using userMangment.Interfaces;
 using userMangment.Models;
@@ -19,7 +19,7 @@ public GymService(ApplicationDbContext context, ILogger<GymService> logger)
 
 public async Task<IEnumerable<GymClass>> GetAllClassesAsync()
 {
-       return await _context.GymClasses.Include(i=> i.AttendingMembers).ToListAsync(); 
+  return await _context.GymClasses.Include(i=> i.AttendingMembers).ToListAsync(); 
         
 }
 
@@ -45,7 +45,15 @@ public async Task<bool> CreateAsync(GymClass gymClass)
 
  public async Task<bool> UpdateAsync(GymClass editClass)
 {
-   var existClass = await GetByIdAsync(editClass.Id);
+
+
+        // 1. حماية الدالة في حال تم تمرير كائن فارغ
+        if (editClass == null)
+        {
+            _logger.LogWarning("Failed to update: Provided GymClass object is null.");
+            return false;
+        }
+        var existClass = await GetByIdAsync(editClass.Id);
 
    if(existClass == null)
     {

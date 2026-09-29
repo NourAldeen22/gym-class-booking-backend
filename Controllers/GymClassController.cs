@@ -1,10 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.EntityFrameworkCore;
-using userMangment.Interfaces;
-using userMangment.Models;
 using userMangment.ViewModels;
 
 
@@ -21,11 +17,11 @@ public class GymClassController : Controller
      public GymClassController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IGymService gymService, IBookingService bookingService)
      {
         _gymService = gymService;
-         _bookingService = bookingService;
+        _bookingService = bookingService;
         _rolManager = roleManager;
         _userManager = userManager;
 
-            this.OnGymAdded+= MyReactionToAddedGym;
+            //this.OnGymAdded+= MyReactionToAddedGym;
     }
 
     private void MyReactionToAddedGym(object? sender , GymClass gym)
@@ -43,23 +39,22 @@ public class GymClassController : Controller
     {
         var allClasses =  await _gymService.GetAllClassesAsync();
         var currentUser = await _userManager.GetUserAsync(User);
+
         var userId = currentUser?.Id;
          if(allClasses == null)
         {
             return NotFound();
         }
 
-         var viewModel = allClasses.Select(g=> new GymClassViewModel{
-        Id = g.Id,
-        ClasName = g.Name ?? "Unknown Class",
-        Description = g.Desctiption ?? "No description",
-        StartTime = g.StartTime,
-        Duration = g.Duration,
-        IsBookingClosed = g.IsBookingClosed(),
-        IsForbiddenCancle  = g.IsForbiddenCancle(),
-        ISBokinhByUser = userId != null && User.Identity.IsAuthenticated && g.AttendingMembers.Any(u=> u.Id == userId)
-
-        }); 
+        var viewModel = allClasses.Where(c=> c.EndTime > DateTime.UtcNow).Select(g => new GymClassViewModel
+        {
+            Id = g.Id,
+            ClasName = g.Name ?? "Unknown Class",
+            Description = g.Desctiption ?? "No description",
+            StartTime = g.StartTime,
+            Duration = g.Duration,
+            ISBokingByUser = userId != null && User.Identity.IsAuthenticated && g.AttendingMembers.Any(u => u.Id == userId)
+        });  
 
        
         return View(viewModel);
@@ -70,10 +65,18 @@ public class GymClassController : Controller
     public IActionResult CreateGymClass(string? returnUrl = null)
     {
         
-        ViewBag.ReturnUrl = returnUrl ?? Url.Action("AdminDashboard", "Admin");
+        //ViewBag.ReturnUrl = returnUrl ?? Url.Action("AdminDashboard", "Admin");
+        var now = DateTime.Now;
+        
+        var roundedTime = new DateTime(now.Year, now.Month,now.Day, now.Hour,0, 0);
+
+        var viewModel = new GymClassFormViewModel
+        {
+            StartTime = roundedTime
+        };
 
        
-        return View(new GymClassFormViewModel());
+        return View(viewModel);
     }
 
 
@@ -82,24 +85,25 @@ public class GymClassController : Controller
     {
         if(!ModelState.IsValid)
         {
-             ViewBag.ReturnUrl = returnUrl ?? Url.Action("AdminDashboard", "Admin");
+             //ViewBag.ReturnUrl = returnUrl ?? Url.Action("AdminDashboard", "Admin");
             return View(model);
         }
 
-        if(model.StartTime <= DateTime.UtcNow)
+        if(model.StartTime <= DateTime.Now)
         {
             ModelState.AddModelError("StartTime", "Start time must be in the future");
-            ViewBag.ReturnUrl = returnUrl ?? Url.Action("AdminDashboard", "Admin");
+            //ViewBag.ReturnUrl = returnUrl ?? Url.Action("AdminDashboard", "Admin");
             return View(model);
         }
 
         var gymClass = new GymClass
         {
+          Id = model.Id,
           Name = model.ClassName,
           Desctiption = model.Description,
           Duration = model.Duration,
-          StartTime = model.StartTime
-
+          StartTime = model.StartTime,
+           
         };
 
         var result = await _gymService.CreateAsync(gymClass);
@@ -115,11 +119,11 @@ public class GymClassController : Controller
         }
 
 
-        if(!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl) )
-        {
-            return Redirect(returnUrl);
-        }
-        // ViewBag.ReturnUrl = returnUrl ?? Url.Action("AdminDashboard", "Admin");
+        //if(!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl) )
+        //{
+        //    return Redirect(returnUrl);
+        //}
+        //ViewBag.ReturnUrl = returnUrl ?? Url.Action("AdminDashboard", "Admin");
 
         return RedirectToAction("Create", new {returnUrl});
         
@@ -128,15 +132,21 @@ public class GymClassController : Controller
     [HttpGet]
     public async Task<IActionResult> EditGymClass(int id)
     {
-        var gymClass =await _gymService.GetByIdAsync(id);
-
-        if(gymClass == null)
+        if (id == 0) 
         {
             return NotFound();
         }
+        var gymClass =await _gymService.GetByIdAsync(id);
 
+        if (gymClass == null)
+        {
+            return NotFound();
+        }
+        
         var model = new GymClassFormViewModel
         {
+            
+          Id = gymClass.Id,
           ClassName = gymClass.Name ?? string.Empty,
           StartTime = gymClass.StartTime,
           Duration = gymClass.Duration,
@@ -146,13 +156,12 @@ public class GymClassController : Controller
         return View(model);
     }
 
-    [HttpPost]
-     public async Task<IActionResult> EditGymClass(GymClassFormViewModel model, string returnUrl)
+   [HttpPost]
+   public async Task<IActionResult> EditGymClass(GymClassFormViewModel model, string returnUrl)
     {
 
     if(!ModelState.IsValid)
-    {
-        ViewBag.ReturnUrl =  returnUrl ?? Url.Action("AdminDashboard", "Admin");          
+    {          
         return View(model);
     }
 
@@ -160,11 +169,12 @@ public class GymClassController : Controller
     {
             ModelState.AddModelError("StartTime", "Start time must be in the future");
              ViewBag.ReturnUrl =  returnUrl ?? Url.Action("AdminDashboard", "Admin"); 
-            return View("EditGymClass");
+            return View(model);
     }
 
     var gymClass = new GymClass
     {
+        Id = model.Id,
         Name = model.ClassName,
         StartTime = model.StartTime,
         Duration = model.Duration,
@@ -190,7 +200,7 @@ public class GymClassController : Controller
             return Redirect(returnUrl);
         }
 
-        return RedirectToAction("Create", new {returnUrl});
+        return RedirectToAction("AdminDashboard", "Admin");
 
     }
 
@@ -212,26 +222,22 @@ public class GymClassController : Controller
         }
 
         
-        public async Task<IActionResult> DeleteClass(GymClass delete)
+        public async Task<IActionResult> DeleteClass(GymClassViewModel delete)
         {
 
         if(!ModelState.IsValid)
         {
-            // ViewBag.ReturnUrl = returnUrl ?? Url.Action("AdminDashboard", "Admin");
-
             return View(delete);
-
         }
 
-        if(delete.Id == 0)
+        if (delete.Id <= 0)
         {
-            ModelState.AddModelError("Delete", "there is no class to delete" );
-            //  ViewBag.ReturnUrl = returnUrl ?? Url.Action("AdminDashboard", "Admin");
-            return View(delete);
+            ModelState.AddModelError("Delete", "there is no class to delete");
+            return View("Create");
         }
 
 
-        var result =  await  _gymService.DeleteAsync(delete.Id);
+        var result =  await _gymService.DeleteAsync(delete.Id);
 
         if(result)
         {
@@ -247,16 +253,16 @@ public class GymClassController : Controller
         //     return Redirect(returnUrl);
         // }
 
-            return  RedirectToAction("Create");
+            return RedirectToAction("Create");
 
     }
 
 
 
-    [HttpPost]
+     [HttpPost]
      [ValidateAntiForgeryToken]
      [Authorize]
-    [ResponseCache(NoStore =true, Location =ResponseCacheLocation.None)]
+     [ResponseCache(NoStore =true, Location=ResponseCacheLocation.None)]
     public async Task<IActionResult> ToggleBooking(int id)
     {
         var userId =  _userManager.GetUserId(User);
